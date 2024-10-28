@@ -1,0 +1,3 @@
+[submodule "internal_code"]
+	path = internal_code
+	url = https://github.com/ASasamori/Internal_Yobe_Code.git
