@@ -18,8 +18,7 @@ Email: [sasamori@bu.edu](mailto:sasamori@bu.edu)
 
 ---
 
-**Command Lines**
-Here are the commands to run:
+**Command Lines:**
 ----------------------------------------------------------------------------------------------------
 sudo apt install build-essential clang
 
