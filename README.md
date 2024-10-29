@@ -18,6 +18,35 @@ Email: [sasamori@bu.edu](mailto:sasamori@bu.edu)
 
 ---
 
+[**Command Lines**]
+Here are the commands to run:
+----------------------------------------------------------------------------------------------------
+sudo apt install build-essential clang
+
+ tar -xvf YobeSDK-Release-GrandE-0.6.2-Linux.tar.gz
+
+cd  YobeSDK-Release-GrandE-0.6.2-Linux
+
+chmod +x install.sh
+
+sudo ./install.sh D18F38-BC2D17-E709EA-3782C3-8D923E-V3
+
+cd samples
+
+CC=clang CXX=clang++ cmake -B build
+
+cmake --build build
+
+./build/BioListener_demo ./audio_files/BioListener/BioListener_test.wav end-fire near-field "student-pc" ./build
+
+./build/IDListener_demo ./audio_files/IDListener/IDListener_test.wav end-fire no-target "student-pc" ./build
+
+----------------------------------------------------------------------------------------------------
+
+Let me know if you run into any issues,
+Jake
+
+
 [**Yobe**](https://yobeinc.com/), 77 Franklin St, Boston, MA 02110  
 Phone: (617) 848 8922  
 Email: [contact.us@yobeinc.com](mailto:contact.us@yobeinc.com)
