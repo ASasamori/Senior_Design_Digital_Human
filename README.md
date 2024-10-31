@@ -20,6 +20,8 @@ Email: [sasamori@bu.edu](mailto:sasamori@bu.edu)
 
 **Command Lines:**
 ----------------------------------------------------------------------------------------------------
+_ssh into Pi, then:_
+
 sudo apt install build-essential clang
 
  tar -xvf YobeSDK-Release-GrandE-0.6.2-Linux.tar.gz
@@ -41,9 +43,6 @@ cmake --build build
 ./build/IDListener_demo ./audio_files/IDListener/IDListener_test.wav end-fire no-target "student-pc" ./build
 
 ----------------------------------------------------------------------------------------------------
-
-Let me know if you run into any issues,
-Jake
 
 
 [**Yobe**](https://yobeinc.com/), 77 Franklin St, Boston, MA 02110  
