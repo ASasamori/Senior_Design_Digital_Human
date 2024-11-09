@@ -18,8 +18,8 @@
 constexpr auto ENV_VAR_LICENSE = "YOBE_LICENSE";
 
 /// These are the template we are going to use to create Yobe::IDTemplate
-constexpr auto TEMPLATE_01 = AUDIO_FILES_PATH "/IDListener/user_1_template_01.wav";
-constexpr auto TEMPLATE_02 = AUDIO_FILES_PATH "/IDListener/user_1_template_02.wav";
+constexpr auto TEMPLATE_01 = AUDIO_FILES_PATH "/IDListener/suhani_template_01.wav";
+constexpr auto TEMPLATE_02 = AUDIO_FILES_PATH "/IDListener/suhani_template_02.wav";
 
 // These file are in the audio file folder if you want to experiment.
 // constexpr auto TEMPLATE_LONG = AUDIO_FILES_PATH "/IDListener/user_1_template_40s.wav";
