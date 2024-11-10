@@ -52,27 +52,27 @@ std::ofstream log_stream;
  * Added in by Andrew Sasamori, Suhani Mitra, 11/07/2024
 
  */
-std::vector<double> normalizeAudio(const std::vector<double>& buffer) {
+std::vector<float> normalizeAudio(const std::vector<float>& buffer) {
     if (buffer.empty()) {
         return buffer;
     }
 
     // Find the maximum absolute value in the buffer
-    double max_abs = 0.0;
-    for (const double& sample : buffer) {
+    float max_abs = 0.0f;
+    for (const float& sample : buffer) {
         max_abs = std::max(max_abs, std::abs(sample));
     }
 
     // If audio is completely silent or already normalized, return original
-    if (max_abs == 0.0 || max_abs == 1.0) {
+    if (max_abs == 0.0f || max_abs == 1.0f) {
         return buffer;
     }
 
     // Calculate normalization factor
-    double normalize_factor = 1.0 / max_abs;
+    float normalize_factor = 1.0f / max_abs;
 
     // Apply normalization
-    std::vector<double> normalized_buffer(buffer.size());
+    std::vector<float> normalized_buffer(buffer.size());
     for (size_t i = 0; i < buffer.size(); ++i) {
         normalized_buffer[i] = buffer[i] * normalize_factor;
     }
@@ -98,9 +98,11 @@ int main(int argc, char* argv[]) {
         Yobe::MicOrientation mic_orientation = DemoUtil::GetMicOrientation(argv[2]);
         Yobe::OutputBufferType out_buffer_type = DemoUtil::GetOutputBufferType(argv[3]);
         
-        // Preparing input buffer
+       // Preparing input buffer
         const auto raw_input_buffer = DemoUtil::ReadAudioFile(file_path);
-        std::vector<double> input_buffer = normalizeAudio(raw_input_buffer);
+
+        // Normalize the input buffer
+        const auto input_buffer = normalizeAudio(raw_input_buffer);
 
         std::cout << '\n';
 
