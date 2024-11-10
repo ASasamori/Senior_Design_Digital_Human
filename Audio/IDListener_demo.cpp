@@ -32,7 +32,7 @@ constexpr auto TEMPLATE_02 = AUDIO_FILES_PATH "/IDListener/suhani_template_02.wa
  *
  * @return A interleaved audio buffer.
  */
-std::vector<double> YobeProcessing(const std::string& license, std::vector<double> input_buffer, Yobe::MicOrientation mic_orientation, Yobe::OutputBufferType out_buffer_type);
+std::vector<float> YobeProcessing(const std::string& license, const std::string& machine_name, const std::string& file_path,  std::vector<float> input_buffer, Yobe::MicOrientation mic_orientation, Yobe::OutputBufferType out_buffer_type);
 
 /**
  * This function shows you how to make a Yobe::IDTemplate.
@@ -44,48 +44,6 @@ std::shared_ptr<Yobe::IDTemplate> CreateTemplateFromFile(const std::unique_ptr<Y
 /// This ofstream is to demo the logging callback.
 std::ofstream log_stream;
 
-int main(int argc, char* argv[]) {
-    if (argc < 4) {
-        std::cerr << "\nERROR- invalid arguments\n\n";
-        std::cerr << "Example: IDListener_demo WAV_FILE_PATH [end-fire|broadside] [target-speaker|no-target]\n";
-    } else {
-        // Just printing out the setting the IDListener expects
-        std::cout << "Just checking to see if the Yobe parameters match the audio file.\n";
-        std::cout << "Expected sampling rate: " << Yobe::Info::SamplingRate() << '\n';
-        std::cout << "Expected buffer size in seconds: " << Yobe::Info::AudioBufferTime() << '\n';
-        std::cout << "Number expected input channels: " << Yobe::Info::InputChannels() << '\n';
-        std::cout << "Number expected output channels: " << Yobe::Info::OutputChannels() << "\n\n";
-
-        const std::string file_path(argv[1]);
-        Yobe::MicOrientation mic_orientation = DemoUtil::GetMicOrientation(argv[2]);
-        Yobe::OutputBufferType out_buffer_type = DemoUtil::GetOutputBufferType(argv[3]);
-        
-        // Preparing input buffer
-        const auto raw_input_buffer = DemoUtil::ReadAudioFile(file_path);
-        std::vector<double> input_buffer = normalizeAudio(raw_input_buffer);
-
-        std::cout << '\n';
-
-        std::vector<double> processed_audio;
-        try {
-            // All the Yobe processing happens in this function
-            processed_audio = YobeProcessing(getLicense(ENV_VAR_LICENSE), input_buffer, mic_orientation, out_buffer_type);
-        } catch (const std::exception& e) {
-            std::cerr << e.what() << '\n';
-            return 1;
-        }
-
-        // Writing the processed data to a .wav file
-        std::string output_file = file_path.substr(0, file_path.size()-4) + "_" + argv[2] + ".wav";
-        DemoUtil::WriteAudioFile(output_file, processed_audio);
-    }
-
-    return 0;
-}
-
-void LogCallback(const char* mess) {
-   log_stream << mess << '\n'; 
-}
 
 /**
 
@@ -123,14 +81,61 @@ std::vector<double> normalizeAudio(const std::vector<double>& buffer) {
 }
 
 
-std::vector<double> YobeProcessing(const std::string& license, std::vector<double> input_buffer, Yobe::MicOrientation mic_orientation, Yobe::OutputBufferType out_buffer_type) {
+
+int main(int argc, char* argv[]) {
+    if (argc < 6) {
+        std::cerr << "\nERROR- invalid arguments\n\n";
+        std::cerr << "Example: IDListener_demo WAV_FILE_PATH [end-fire|broadside] [target-speaker|no-target] device_name license_file_path\n";
+    } else {
+        // Just printing out the setting the IDListener expects
+        std::cout << "Just checking to see if the Yobe parameters match the audio file.\n";
+        std::cout << "Expected sampling rate: " << Yobe::Info::SamplingRate() << '\n';
+        std::cout << "Expected buffer size in seconds: " << Yobe::Info::AudioBufferTime() << '\n';
+        std::cout << "Number expected input channels: " << Yobe::Info::InputChannels() << '\n';
+        std::cout << "Number expected output channels: " << Yobe::Info::OutputChannels() << "\n\n";
+
+        const std::string file_path(argv[1]);
+        Yobe::MicOrientation mic_orientation = DemoUtil::GetMicOrientation(argv[2]);
+        Yobe::OutputBufferType out_buffer_type = DemoUtil::GetOutputBufferType(argv[3]);
+        
+        // Preparing input buffer
+        const auto raw_input_buffer = DemoUtil::ReadAudioFile(file_path);
+        std::vector<double> input_buffer = normalizeAudio(raw_input_buffer);
+
+        std::cout << '\n';
+
+        std::vector<float> processed_audio;
+        std::string device_name = argv[4];
+        std::string license_file_path = argv[5];
+        
+        try {
+            // All the Yobe processing happens in this function
+            processed_audio = YobeProcessing(getLicense(ENV_VAR_LICENSE), device_name, license_file_path, input_buffer, mic_orientation, out_buffer_type);
+        } catch (const std::exception& e) {
+            std::cerr << e.what() << '\n';
+            return 1;
+        }
+
+        // Writing the processed data to a .wav file
+        std::string output_file = file_path.substr(0, file_path.size()-4) + "_" + argv[2] + ".wav";
+        DemoUtil::WriteAudioFile(output_file, processed_audio);
+    }
+
+    return 0;
+}
+
+void LogCallback(const char* mess) {
+   log_stream << mess << '\n'; 
+}
+
+std::vector<float> YobeProcessing(const std::string& license, const std::string& device_name, const std::string& file_path, std::vector<float> input_buffer, Yobe::MicOrientation mic_orientation, Yobe::OutputBufferType out_buffer_type) {
     // Here we set up our logging callback
     log_stream.open("IDListener_demo.log");
     Yobe::Info::RegisterCallback(LogCallback);
 
     
     // Init the IDListener.
-    auto id_listener = Yobe::Create::NewIDListener(license.c_str(), INIT_DATA_PATH, mic_orientation, out_buffer_type);
+    auto id_listener = Yobe::Create::NewIDListener(license, device_name, file_path, INIT_DATA_PATH, mic_orientation, out_buffer_type);
 
     if (id_listener == nullptr) {
         std::cout << "Probably the library you have does not have biometrics." << std::endl;
@@ -148,10 +153,10 @@ std::vector<double> YobeProcessing(const std::string& license, std::vector<doubl
     const auto input_size = Yobe::Info::InputBufferSize();
 
     // Prepare output buffer for collecting the out put from the IDListener.
-    std::vector<double> output_buffer;
+    std::vector<float> output_buffer;
 
     // This is the pre-allocated buffer that will be returned with processed data in it.
-    std::vector<double> scratch_buffer;
+    std::vector<float> scratch_buffer;
 
     auto status = Yobe::Status::YOBE_UNKNOWN;
     const auto total_input_samples = input_buffer.size();
@@ -219,7 +224,7 @@ std::shared_ptr<Yobe::IDTemplate> CreateTemplateFromFile(const std::unique_ptr<Y
             throw;
         }
 
-        std::vector<double> out_samples{};
+        std::vector<float> out_samples{};
         int template_index;
         status = id_listener->ProcessBuffer(&template_samples[sample_idx], out_samples, Yobe::Info::InputBufferSize(), template_index);
         sample_idx += Yobe::Info::InputBufferSize();
