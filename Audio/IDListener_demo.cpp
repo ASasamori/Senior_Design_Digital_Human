@@ -44,44 +44,6 @@ std::shared_ptr<Yobe::IDTemplate> CreateTemplateFromFile(const std::unique_ptr<Y
 /// This ofstream is to demo the logging callback.
 std::ofstream log_stream;
 
-
-/**
-
- * Adjusts the gain of an audio buffer by a linear factor.
- * Outputs audio that is in the range [-1.0, 1.0].
- * Added in by Andrew Sasamori, Suhani Mitra, 11/07/2024
-
- */
-std::vector<float> normalizeAudio(const std::vector<float>& buffer) {
-    if (buffer.empty()) {
-        return buffer;
-    }
-
-    // Find the maximum absolute value in the buffer
-    float max_abs = 0.0f;
-    for (const float& sample : buffer) {
-        max_abs = std::max(max_abs, std::abs(sample));
-    }
-
-    // If audio is completely silent or already normalized, return original
-    if (max_abs == 0.0f || max_abs == 1.0f) {
-        return buffer;
-    }
-
-    // Calculate normalization factor
-    float normalize_factor = 1.0f / max_abs;
-
-    // Apply normalization
-    std::vector<float> normalized_buffer(buffer.size());
-    for (size_t i = 0; i < buffer.size(); ++i) {
-        normalized_buffer[i] = buffer[i] * normalize_factor;
-    }
-
-    return normalized_buffer;
-}
-
-
-
 int main(int argc, char* argv[]) {
     if (argc < 6) {
         std::cerr << "\nERROR- invalid arguments\n\n";
@@ -98,11 +60,8 @@ int main(int argc, char* argv[]) {
         Yobe::MicOrientation mic_orientation = DemoUtil::GetMicOrientation(argv[2]);
         Yobe::OutputBufferType out_buffer_type = DemoUtil::GetOutputBufferType(argv[3]);
         
-       // Preparing input buffer
-        const auto raw_input_buffer = DemoUtil::ReadAudioFile(file_path);
-
-        // Normalize the input buffer
-        const auto input_buffer = normalizeAudio(raw_input_buffer);
+        // Preparing input buffer
+        const auto input_buffer = DemoUtil::ReadAudioFile(file_path);
 
         std::cout << '\n';
 
