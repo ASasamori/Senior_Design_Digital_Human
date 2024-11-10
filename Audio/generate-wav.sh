@@ -10,11 +10,11 @@ RAW_OUTPUT="${TIMESTAMP}_output"
 # This creates a .wav file in the specified location
 cd  ~/YobeSDK-Release-GrandE-0.6.2-Linux/samples
 arecord -D plughw:2,0 -f S16_LE -r 16000 -c 2 -t wav -d 10 "$YOBE_SDK/audio_files/IDListener/${RAW_OUTPUT}.wav"
-g++ -o "$START_DIR/audio/normalize_raw" "$START_DIR/audio/normalize_wav.cpp" -std=c++11
+g++ -o "$START_DIR/Audio/normalize_raw" "$START_DIR/Audio/normalize_wav.cpp" -std=c++11
 
-# Normalizes raw audio
+# Normalizes raw Audio
 # Command follows the convention of: Executable, input, output
-./"$START_DIR/audio/normalize_raw" "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav" "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}.wav"
+./"$START_DIR/Audio/normalize_raw" "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav" "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}.wav"
 
 
 # build ... broadside/endfire
@@ -27,6 +27,6 @@ cmake --build "$YOBE_SDK/samples/build" # New pi or if changing the C++ file
 
 # mv old_filename new_filename
 mv "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_processed.wav" "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_processed.wav"
-./"$START_DIR/audio/normalize_raw" "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_processed.wav" "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_processed.wav"
+./"$START_DIR/Audio/normalize_raw" "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_processed.wav" "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_processed.wav"
 
-rm "$START_DIR/audio/normalize_raw"
+rm "$START_DIR/Audio/normalize_raw"
