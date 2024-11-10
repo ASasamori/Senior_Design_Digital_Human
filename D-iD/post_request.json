@@ -1,0 +1,16 @@
+{
+    "source_url": "https://d-id-public-bucket.s3.us-west-2.amazonaws.com/alice.jpg",
+    "script": {
+      "type": "text",
+      "subtitles": "false",
+      "provider": {
+        "type": "microsoft",
+        "voice_id": "Sara"
+      },
+      "input": "Hi, my name is Butler. Please introduce your name, major, and year!"
+    },
+    "config": {
+      "fluent": "false",
+      "pad_audio": "0.0"
+    }
+  }
