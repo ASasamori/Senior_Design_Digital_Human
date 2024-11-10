@@ -10,7 +10,8 @@ RAW_OUTPUT="${TIMESTAMP}_output"
 
 # This creates a .wav file in the specified location
 cd  ~/YobeSDK-Release-GrandE-0.6.2-Linux/samples
-arecord -D plughw:2,0 -f S16_LE -r 16000 -c 2 -t wav -d 2 "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav"
+# wav -d {number_of_seconds}; 25 seconds right now
+arecord -D plughw:2,0 -f S16_LE -r 16000 -c 2 -t wav -d 25 "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav"
 echo "A record has finished"
 g++ -o "$START_DIR/Audio/normalize_raw" "$START_DIR/Audio/normalize_wav.cpp" -std=c++11
 
