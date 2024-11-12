@@ -1,1 +1,6 @@
 /env
+.env
+/google_cloud_env/bin
+/google_cloud_env/include
+/google_cloud_env/lib
+/google_cloud_env/lib64
