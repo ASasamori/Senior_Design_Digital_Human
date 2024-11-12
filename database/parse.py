@@ -14,7 +14,7 @@ openai.api_key = "YOUR_OPENAI_API_KEY"
 bigquery_client = bigquery.Client()
 
 def fetch_data_from_bigquery(query):
-    """Fetches data from BigQuery based on a SQL query."""
+    """Fetches data from BigQuery based on a SQL query."""   
     query_job = bigquery_client.query(query)  # Run the query
     result = query_job.result()
     data = [dict(row) for row in result]  # Convert rows to a list of dictionaries
