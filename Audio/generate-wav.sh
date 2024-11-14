@@ -39,7 +39,14 @@ mv "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_broadside_pr
 # Calling Google ASR on normalized Yobe output file
 # We need to do this within a virtual environment
 source ~/gcloudenv/bin/activate
-python ~/gcloudenv/googleTabulate.py "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_broadside.wav"
+python ~/gcloudenv/googleTabulate.py "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_broadside.wav" > "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt"
+
+
+# INSERT HERE
+# Call to python script with LLM & cloud database
+# for example:
+# python3 conversation.py "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt" "$START_DIR/Audio/${TIMESTAMP}_LLM_output.txt"
+
 deactivate
 
 # Cleanup
