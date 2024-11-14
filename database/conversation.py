@@ -13,7 +13,7 @@ project_id = "sanguine-orb-441020-p6"
 instance_name = "langchain-quickstart-instance"
 region = "us-central1"
 database_name = "ec463-temp-database"
-password = "ec463"
+password = "*****"
 
 
 # Initialize the embedding service

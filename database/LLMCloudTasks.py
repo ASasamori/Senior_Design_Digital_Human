@@ -19,7 +19,7 @@ pg_engine = PostgresEngine.from_instance(
     region="us-central1",
     database="ec463-temp-database",
     user="postgres",
-    password="ec463",
+    password="*****",
 )
 
 # Use Case 1: Cloud SQL for PostgreSQL as a document loader
