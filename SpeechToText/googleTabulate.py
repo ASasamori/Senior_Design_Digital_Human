@@ -3,6 +3,7 @@ from google.cloud import speech
 from pydub import AudioSegment
 from pydub.effects import normalize
 import argparse
+import time
 
 # Set up credentials
 CREDENTIALS_PATH = '/Users/noamargolin/gcloudenv/sanguine-orb-441020-p6-a442ce3d1ed1.json'
@@ -44,15 +45,16 @@ def transcribe_streaming_v1(stream_file: str):
 
     # Process stream and print transcripts
     responses = client.streaming_recognize(config=streaming_config, requests=requests())
-    #fullString = ''
+    #fullString to print a sentence all together
+    fullString = ''
     print('Transcript')
     for response in responses:
         for result in response.results:
             # FOR LINE BY LINE
-            print(result.alternatives[0].transcript.strip())
-            #fullString += result.alternatives[0].transcript
+            #print(result.alternatives[0].transcript.strip())
+            fullString += result.alternatives[0].transcript
     #TO PRINT THE WHOLE SENTENCE TOGETHER:
-    #print(f"Transcript: {fullString.strip()}")
+    print(f"Transcript: {fullString.strip()}")
 
     os.remove(normalized_file)  # Clean up
 
@@ -63,4 +65,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Run streaming transcription with the provided file path
+    start_test_time = time.time()
     transcribe_streaming_v1(args.file)
+    end_test_time = time.time()
+    print(f"Total ASR Test Time: {round(start_test_time, end_test_time, 2)}s")
