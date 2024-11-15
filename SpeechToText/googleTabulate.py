@@ -55,8 +55,11 @@ def transcribe_streaming_v1(stream_file: str):
             fullString += result.alternatives[0].transcript
     #TO PRINT THE WHOLE SENTENCE TOGETHER:
     print(f"Transcript: {fullString.strip()}")
-
     os.remove(normalized_file)  # Clean up
+
+    return fullString.strip()
+
+    
 
 # Command-line argument parsing
 if __name__ == "__main__":
@@ -66,6 +69,8 @@ if __name__ == "__main__":
 
     # Run streaming transcription with the provided file path
     start_test_time = time.time()
-    transcribe_streaming_v1(args.file)
+    transcript = transcribe_streaming_v1(args.file)
     end_test_time = time.time()
+    with open('transcript.txt', 'w') as file:
+        file.write(transcript)
     print(f"Total ASR Test Time: {round(start_test_time, end_test_time, 2)}s")
