@@ -4,7 +4,7 @@ from langchain.memory import ConversationSummaryBufferMemory
 from langchain_core.prompts import PromptTemplate
 from langchain_google_cloud_sql_pg import Column
 from langchain_google_vertexai import VertexAIEmbeddings
-from langchain_google_cloud_sql_pg import PostgresVectorStore, PostgresLoader, PostgresEngine, Column
+from langchain_google_cloud_sql_pg import PostgresVectorStore, PostgresChatMessageHistory, PostgresLoader, PostgresEngine, Column
 
 import asyncio
 
