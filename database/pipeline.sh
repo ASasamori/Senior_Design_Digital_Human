@@ -1,11 +1,16 @@
-# %pip install --upgrade --quiet langchain-google-cloud-sql-pg langchain-google-vertexai langchain
-
-# integrating LLM / Cloud
+# Integrating LLM / Cloud
 # Separated into tasks and running respective shell commands as necessary
+# Andrew Sasamori, Suhani Mitra
+# EC 463 Senior Design
+
+# Required dependencies:
+# %pip install --upgrade --quiet langchain-google-cloud-sql-pg langchain-google-vertexai langchain
 
 
 # task 1
 project_id="sanguine-orb-441020-p6"
+instance_name="langchain-quickstart-instance"
+databse_name="ec463-temp-database"
 python init.py
 # end task 1
 
@@ -25,21 +30,33 @@ gcloud projects add-iam-policy-binding $project_id \
 gcloud services enable sqladmin.googleapis.com aiplatform.googleapis.com
 
 
-# consider maybe integrating the below into one python script
+# Integrating our various use cases
 
-# starting to integrate the different use cases
+
+
 # task 2 - use case 1
 python case1.py
 # end task 2
+
+
 
 # task 3 - use case 2
 python case2.py
 # end task 3
 
+
+# Import the netflix titles with vector table using gcloud command
+gcloud sql import sql $instance_name gs://cloud-samples-data/langchain/cloud-sql/postgres/netflix_titles_vector_table.sql --database=$database_name --quiet
+
+
 # task 4 - use case 3
 python case3.py
 # end task 4
 
+
 # task 5 - conversation
+
+# modify this to use our own conversation inputs
 python conversation.py
+
 # end task 5

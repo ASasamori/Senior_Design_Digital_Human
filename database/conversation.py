@@ -1,58 +1,12 @@
-from langchain_google_vertexai import VertexAIEmbeddings, VertexAI
+from langchain_google_vertexai import VertexAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationSummaryBufferMemory
 from langchain_core.prompts import PromptTemplate
-from langchain_google_cloud_sql_pg import (
-    PostgresEngine,
-    PostgresVectorStore,
-    PostgresChatMessageHistory,
-)
 
-project_id = "sanguine-orb-441020-p6"  
-instance_name = "langchain-quickstart-instance"
-region = "us-central1"
-database_name = "ec463-temp-database"
-password = "*****"
+from case1 import project_id_init
+from case2 import vector_store
+from case3 import chat_history
 
-
-# Initialize the embedding service
-embeddings_service = VertexAIEmbeddings(
-    model_name="textembedding-gecko@latest", project=project_id
-)
-
-# Initialize the engine
-pg_engine = PostgresEngine.from_instance(
-    project_id=project_id,
-    instance=instance_name,
-    region=region,
-    database=database_name,
-    user="postgres",
-    password=password,
-)
-
-# Initialize the Vector Store
-vector_table_name = "movie_vector_table"
-vector_store = PostgresVectorStore.create_sync(
-    engine=pg_engine,
-    embedding_service=embeddings_service,
-    table_name=vector_table_name,
-    metadata_columns=[
-        "show_id",
-        "type",
-        "country",
-        "date_added",
-        "release_year",
-        "duration",
-        "listed_in",
-    ],
-)
-
-# Initialize the PostgresChatMessageHistory
-chat_history = PostgresChatMessageHistory.create_sync(
-    pg_engine,
-    session_id="my-test-session",
-    table_name="message_store",
-)
 
 # Prepare some prompt templates for the ConversationalRetrievalChain
 prompt = PromptTemplate(
@@ -87,7 +41,7 @@ retriever = vector_store.as_retriever(
 )
 
 
-llm = VertexAI(model_name="gemini-pro", project=project_id)
+llm = VertexAI(model_name="gemini-pro", project=project_id_init)
 
 
 chat_history.clear()

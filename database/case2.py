@@ -1,25 +1,12 @@
-from langchain_google_cloud_sql_pg import PostgresEngine, Column
+from langchain_google_cloud_sql_pg import Column
 from langchain_google_vertexai import VertexAIEmbeddings
 from langchain_google_cloud_sql_pg import PostgresVectorStore
 
 import uuid
 
+from case1 import documents, pg_engine, project_id_init
+
 sample_vector_table_name = "movie_vector_table_samples"
-project_id = "sanguine-orb-441020-p6"  
-instance_name = "langchain-quickstart-instance"
-region = "us-central1"
-database_name = "ec463-temp-database"
-password = "*****"
-
-
-pg_engine = PostgresEngine.from_instance(
-    project_id=project_id,
-    instance=instance_name,
-    region=region,
-    database=database_name,
-    user="postgres",
-    password=password,
-)
 
 pg_engine.init_vectorstore_table(
     sample_vector_table_name,
@@ -40,7 +27,7 @@ pg_engine.init_vectorstore_table(
 
 # Initialize the embedding service. In this case we are using version 003 of Vertex AI's textembedding-gecko model. In general, it is good practice to specify the model version used.
 embeddings_service = VertexAIEmbeddings(
-    model_name="textembedding-gecko@003", project=project_id
+    model_name="textembedding-gecko@003", project=project_id_init
 )
 
 vector_store = PostgresVectorStore.create_sync(
@@ -67,12 +54,16 @@ ids = [str(uuid.uuid4()) for i in range(len(docs_to_load))]
 vector_store.add_documents(docs_to_load, ids)
 
 
-# Import the netflix titles with vector table using gcloud command
-import_command_output = !gcloud sql import sql {instance_name} gs://cloud-samples-data/langchain/cloud-sql/postgres/netflix_titles_vector_table.sql --database={database_name} --quiet
+# See shell file for this part
 
-if "Imported data" in str(import_command_output):
-    print(import_command_output)
-elif "already exists" in str(import_command_output):
-    print("Did not import because the table already existed.")
-else:
-    raise Exception(f"The import seems failed:\n{import_command_output}")
+
+
+# # Import the netflix titles with vector table using gcloud command
+# import_command_output = !gcloud sql import sql {instance_name} gs://cloud-samples-data/langchain/cloud-sql/postgres/netflix_titles_vector_table.sql --database={database_name} --quiet
+
+# if "Imported data" in str(import_command_output):
+#     print(import_command_output)
+# elif "already exists" in str(import_command_output):
+#     print("Did not import because the table already existed.")
+# else:
+#     raise Exception(f"The import seems failed:\n{import_command_output}")
