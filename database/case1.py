@@ -16,3 +16,17 @@ pg_engine = PostgresEngine.from_instance(
     user=user_init,
     password=password_init,
 )
+
+table_name = "netflix_titles"
+content_columns = ["title", "director", "cast", "description"]
+loader = await PostgresLoader.create(
+    engine=pg_engine,
+    query=f"SELECT * FROM {table_name};",
+    content_columns=content_columns,
+)
+
+
+documents = await loader.aload()
+print(f"Loaded {len(documents)} from the database. 5 Examples:")
+for doc in documents[:5]:
+    print(doc)
