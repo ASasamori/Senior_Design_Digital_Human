@@ -1,6 +1,8 @@
 /env
 .env
+/.venv
 /google_cloud_env/bin
 /google_cloud_env/include
 /google_cloud_env/lib
 /google_cloud_env/lib64
+/google_cloud_env/sanguine-orb-441020-p6-a442ce3d1ed1.json
