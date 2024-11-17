@@ -8,12 +8,9 @@ echo "This path is $YOBE_SDK "
 TIMESTAMP=$(date +"%m_%d_%H_%M")
 RAW_OUTPUT="${TIMESTAMP}_output"
 
-<<<<<<< HEAD
-=======
+
 # Start total latency timer
 TOTAL_START=$(date +%s.%N)
-
->>>>>>> Suhani
 # This creates a .wav file in the specified location
 cd  ~/YobeSDK-Release-GrandE-0.6.2-Linux/samples
 # wav -d {number_of_seconds}; 25 seconds right now
@@ -29,24 +26,17 @@ g++ -o "$START_DIR/Audio/normalize_raw" "$START_DIR/Audio/normalize_wav.cpp" -st
 # build ... broadside/endfire
 cmake --build "$YOBE_SDK/samples/build" # New pi or if changing the C++ file
 
-<<<<<<< HEAD
-=======
 #Yobe Latency
 DEMO_START=$(date +%s.%N)
-
->>>>>>> Suhani
 # Build file and have to run from the samples directory
 # ./build/IDListener_demo ./audio_files/IDListener/[file_location].wav broadside target-speaker "student-pc" ./build
 # Output file will be in the same location, but have _processed.wav extension
 ./build/IDListener_demo "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}.wav" broadside target-speaker "student-pc" ./build
 
-<<<<<<< HEAD
-=======
 #Yobe Latency
 DEMO_END=$(date +%s.%N)
 DEMO_DURATION=$(echo "$DEMO_END - $DEMO_START" | bc)
 echo "IDListener_demo duration: ${DEMO_DURATION} seconds"
->>>>>>> Suhani
 
 # TODO: ADD ELIF TO CHECK IF RUNNING BROADSIDE/ENDFIRE
 # mv old_filename new_filename
@@ -56,8 +46,6 @@ mv "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_broadside_pr
 mv "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_broadside_processed.wav" "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_broadside.wav"
 # Output file name is TIMESTAMP_{broadfire/endfire}.wav; which is processed and normalized
 
-<<<<<<< HEAD
-=======
 # Calling Google ASR on normalized Yobe output file
 # We need to do this within a virtual environment
 ASR_START=$(date +%s.%N)
@@ -81,7 +69,6 @@ TOTAL_END=$(date +%s.%N)
 TOTAL_DURATION=$(echo "$TOTAL_END - $TOTAL_START" | bc)
 echo "Total script duration: ${TOTAL_DURATION} seconds"
 
->>>>>>> Suhani
 # Cleanup
 rm "$START_DIR/Audio/normalize_raw"
 rm "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_processed.wav"

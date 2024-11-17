@@ -45,7 +45,9 @@ python case2.py
 # end task 3
 
 
-# Import the netflix titles with vector table using gcloud command
+project_id="sanguine-orb-441020-p6"
+instance_name="langchain-quickstart-instance"
+database_name="ec463-temp-database"
 gcloud sql import sql $instance_name gs://cloud-samples-data/langchain/cloud-sql/postgres/netflix_titles_vector_table.sql --database=$database_name --quiet
 
 
