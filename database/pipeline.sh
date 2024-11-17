@@ -10,7 +10,7 @@
 # task 1
 project_id="sanguine-orb-441020-p6"
 instance_name="langchain-quickstart-instance"
-databse_name="ec463-temp-database"
+database_name="ec463-temp-database"
 python init.py
 # end task 1
 
@@ -46,7 +46,7 @@ python case2.py
 
 
 # Import the netflix titles with vector table using gcloud command
-gcloud sql import sql $instance_name gs://cloud-samples-data/langchain/cloud-sql/postgres/netflix_titles_vector_table.sql --database=$database_name --quiet
+# gcloud sql import sql $instance_name gs://cloud-samples-data/langchain/cloud-sql/postgres/netflix_titles_vector_table.sql --database=$database_name --quiet
 
 
 # task 4 - use case 3

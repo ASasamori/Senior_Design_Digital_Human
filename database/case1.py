@@ -20,6 +20,7 @@ pg_engine = PostgresEngine.from_instance(
 
 table_name = "netflix_titles"
 content_columns = ["title", "director", "cast", "description"]
+documents=[]
 
 # Wrap the code in an async function
 async def load_documents():

@@ -54,9 +54,7 @@ ids = [str(uuid.uuid4()) for i in range(len(docs_to_load))]
 vector_store.add_documents(docs_to_load, ids)
 
 
-# See shell file for this part
-
-
+# See shell file for this part\
 
 # # Import the netflix titles with vector table using gcloud command
 # import_command_output = !gcloud sql import sql {instance_name} gs://cloud-samples-data/langchain/cloud-sql/postgres/netflix_titles_vector_table.sql --database={database_name} --quiet
