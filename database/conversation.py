@@ -6,7 +6,7 @@ from langchain_google_cloud_sql_pg import Column
 from langchain_google_vertexai import VertexAIEmbeddings
 from langchain_google_cloud_sql_pg import PostgresVectorStore, PostgresChatMessageHistory, PostgresLoader, PostgresEngine, Column
 
-import asyncio
+import asyncio, uuid
 
 # case 1
 project_id_init="sanguine-orb-441020-p6"
