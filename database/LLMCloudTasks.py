@@ -15,15 +15,23 @@ from langchain_core.prompts import PromptTemplate
 
 import uuid
 
+
 # Setup the PostgresEngine
 
+project_id="sanguine-orb-441020-p6"
+instance="langchain-quickstart-instance"
+region="us-central1"
+database="ec463-temp-database"
+user="postgres"
+password="*****"
+
 pg_engine = PostgresEngine.from_instance(
-    project_id="sanguine-orb-441020-p6",
-    instance="langchain-quickstart-instance",
-    region="us-central1",
-    database="ec463-temp-database",
-    user="postgres",
-    password="*****",
+    project_id=project_id,
+    instance=instance,
+    region=region,
+    database=database,
+    user=user,
+    password=password,
 )
 
 # Use Case 1: Cloud SQL for PostgreSQL as a document loader
@@ -43,8 +51,6 @@ for doc in documents[:5]:
 
   
 # Use Case 2: Cloud SQL for PostgreSQL as Vector Store
-
-
 sample_vector_table_name = "movie_vector_table_samples"
 
 pg_engine.init_vectorstore_table(
@@ -102,12 +108,11 @@ elif "already exists" in str(import_command_output):
 else:
     raise Exception(f"The import seems failed:\n{import_command_output}")
 
+
+
 # Use case 3: Cloud SQL for PostgreSQL as Chat Memory
 
-
-
 message_table_name = "message_store"
-
 pg_engine.init_chat_history_table(table_name=message_table_name)
 
 chat_history = PostgresChatMessageHistory.create_sync(
@@ -122,22 +127,12 @@ chat_history.add_ai_message("Hello there. I'm a model and am happy to help!")
 chat_history.messages
 
 # FINAL: Conversational RAG Chain backed by Cloud SQL Postgre
-# See file called "conversation.py" for the final code
 
 # Initialize the embedding service
 embeddings_service = VertexAIEmbeddings(
     model_name="textembedding-gecko@latest", project=project_id
 )
 
-# Initialize the engine
-pg_engine = PostgresEngine.from_instance(
-    project_id=project_id,
-    instance=instance_name,
-    region=region,
-    database=database_name,
-    user="postgres",
-    password=password,
-)
 
 # Initialize the Vector Store
 vector_table_name = "movie_vector_table"
