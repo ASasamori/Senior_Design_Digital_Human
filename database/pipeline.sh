@@ -6,7 +6,8 @@
 
 # task 1
 project_id="sanguine-orb-441020-p6"
-python "task.py"
+python "task1.py"
+# end task 1
 
 gcloud config set project {project_id}
 
@@ -26,3 +27,5 @@ gcloud services enable sqladmin.googleapis.com aiplatform.googleapis.com
 # starting to integrate the different use cases
 
 # task 2 - use case 1
+
+# end task 2
