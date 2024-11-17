@@ -27,6 +27,7 @@ def setup_postgres_engine():
         password=password,
     )
 
+
 # Use Case 1: Cloud SQL for PostgreSQL as Document Loader
 async def load_documents(pg_engine, table_name="netflix_titles", content_columns=None):
     if content_columns is None:
@@ -39,6 +40,7 @@ async def load_documents(pg_engine, table_name="netflix_titles", content_columns
     documents = await loader.aload()
     print(f"Loaded {len(documents)} documents.")
     return documents
+
 
 # Use Case 2: Cloud SQL for PostgreSQL as Vector Store
 def setup_vector_store(pg_engine, documents):
