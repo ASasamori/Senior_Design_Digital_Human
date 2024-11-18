@@ -31,9 +31,9 @@ async def load_documents():
     )
 
     documents = await loader.aload()
-    print(f"Loaded {len(documents)} from the database. 5 Examples:")
-    for doc in documents[:5]:
-        print(doc)
+    # print(f"Loaded {len(documents)} from the database. 5 Examples:")
+    # for doc in documents[:5]:
+    #     print(doc)
 
 
 # Run the async function

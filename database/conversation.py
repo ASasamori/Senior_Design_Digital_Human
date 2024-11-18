@@ -31,20 +31,22 @@ documents=[]
 
 # Wrap the code in an async function
 async def load_documents():
+    global documents
     loader = await PostgresLoader.create(
         engine=pg_engine,
-        query=f"SELECT * FROM {table_name};",
+        query=f"SELECT * FROM {table_name} LIMIT 1000;",
         content_columns=content_columns,
     )
 
-    documents = await loader.aload()
-    print(f"Loaded {len(documents)} from the database. 5 Examples:")
-    for doc in documents[:5]:
-        print(doc)
+    # documents = await loader.aload()
+    # print(f"Loaded {len(documents)} from the database. 5 Examples:")
+    # for doc in documents[:5]:
+    #     print(doc)
+    return await loader.aload()
 
 
 # Run the async function
-asyncio.run(load_documents())
+documents = asyncio.run(load_documents())
 
 
 # case 2
@@ -88,14 +90,16 @@ vector_store = PostgresVectorStore.create_sync(
     ],
 )
 
-docs_to_load = documents[:5]
+# Look into this
+docs_to_load = documents
+# print(f"documents is {docs_to_load}")
 
 # ! Uncomment the following line to load all 8,800+ documents to the database vector table with calling the embedding service.
 # docs_to_load = documents
 
 ids = [str(uuid.uuid4()) for i in range(len(docs_to_load))]
 
-print(f"Embedding documents: {docs_to_load}")
+# print(f"Embedding documents: {docs_to_load}")
 vector_store.add_documents(docs_to_load, ids)
 
 
@@ -174,17 +178,17 @@ rag_chain = ConversationalRetrievalChain.from_llm(
 )
 
 # ask some questions
-q = "What movie was Brad Pitt in?"
+q = "What movie is Brad Pitt in?"
 ans = rag_chain({"question": q, "chat_history": chat_history})["answer"]
 print(f"Question: {q}\nAnswer: {ans}\n")
 
-q = "How about Jonny Depp?"
-ans = rag_chain({"question": q, "chat_history": chat_history})["answer"]
-print(f"Question: {q}\nAnswer: {ans}\n")
+# q = "How about Jonny Depp?"
+# ans = rag_chain({"question": q, "chat_history": chat_history})["answer"]
+# print(f"Question: {q}\nAnswer: {ans}\n")
 
-q = "Are there movies about animals?"
-ans = rag_chain({"question": q, "chat_history": chat_history})["answer"]
-print(f"Question: {q}\nAnswer: {ans}\n")
+# q = "Are there movies about animals?"
+# ans = rag_chain({"question": q, "chat_history": chat_history})["answer"]
+# print(f"Question: {q}\nAnswer: {ans}\n")
 
 # browser the chat history
 chat_history.messages
