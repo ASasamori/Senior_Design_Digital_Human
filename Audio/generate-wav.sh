@@ -13,8 +13,10 @@ RAW_OUTPUT="${TIMESTAMP}_output"
 TOTAL_START=$(date +%s.%N)
 # This creates a .wav file in the specified location
 cd  ~/YobeSDK-Release-GrandE-0.6.2-Linux/samples
-# wav -d {number_of_seconds}; 25 seconds right now
-arecord -D plughw:2,0 -f S16_LE -r 16000 -c 2 -t wav -d 25 "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav"
+
+# wav -d {number_of_seconds}; 10 seconds right now
+arecord -D plughw:2,0 -f S16_LE -r 16000 -c 2 -t wav -d 10 "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav"
+
 echo "A record has finished"
 g++ -o "$START_DIR/Audio/normalize_raw" "$START_DIR/Audio/normalize_wav.cpp" -std=c++11
 
@@ -43,31 +45,41 @@ echo "IDListener_demo duration: ${DEMO_DURATION} seconds"
 mv "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_broadside_processed.wav" "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_processed.wav"
 # Hardcoded Broadside for now
 "$START_DIR/Audio/normalize_raw" "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_processed.wav" "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_broadside_processed.wav"
-mv "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_broadside_processed.wav" "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_broadside.wav"
+mv "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_broadside_processed.wav" "$START_DIR/Transcripts/Audio_wav/${TIMESTAMP}_broadside.wav"
 # Output file name is TIMESTAMP_{broadfire/endfire}.wav; which is processed and normalized
 
 # Calling Google ASR on normalized Yobe output file
 # We need to do this within a virtual environment
 ASR_START=$(date +%s.%N)
 source ~/gcloudenv/bin/activate
-python ~/gcloudenv/googleTabulate.py "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_broadside.wav" > "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt"
+python ~/gcloudenv/googleTabulate.py "$START_DIR/Transcripts/Audio_wav/${TIMESTAMP}_broadside.wav" > "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt"
+deactivate
 
 # ASR Latency
-ASR_END=$(date +%s.%N)
-ASR_DURATION=$(echo "$ASR_END - $ASR_START" | bc)
-echo "Google ASR duration: ${ASR_DURATION} seconds"
+# ASR_END=$(date +%s.%N)
+# ASR_DURATION=$(echo "$ASR_END - $ASR_START" | bc)
+# echo "Google ASR duration: ${ASR_DURATION} seconds"
 
+
+###################################
 # INSERT HERE
 # Call to python script with LLM & cloud database
 # for example:
 # python3 conversation.py "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt" "$START_DIR/Audio/${TIMESTAMP}_LLM_output.txt"
+###################################
 
+#####################################
+# Noa + Jackie's implementation; Change to dynamic file
+source ~/BUtLAR_Voice-Powered-Digital_Human_Assistant/Audio/venv/bin/activate
+python3 $START_DIR/Audio/openAItesting.py "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/database/OpenAI_Integration/api_key.json"
+# cat "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt"
 deactivate
+#####################################
 
 # Calculate total elapsed time
-TOTAL_END=$(date +%s.%N)
-TOTAL_DURATION=$(echo "$TOTAL_END - $TOTAL_START" | bc)
-echo "Total script duration: ${TOTAL_DURATION} seconds"
+# TOTAL_END=$(date +%s.%N)
+# TOTAL_DURATION=$(echo "$TOTAL_END - $TOTAL_START" | bc)
+# echo "Total script duration: ${TOTAL_DURATION} seconds"
 
 # Cleanup
 rm "$START_DIR/Audio/normalize_raw"
