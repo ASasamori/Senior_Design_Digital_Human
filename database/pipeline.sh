@@ -49,14 +49,16 @@ gcloud services enable sqladmin.googleapis.com aiplatform.googleapis.com
 # # gcloud sql import sql $instance_name gs://cloud-samples-data/langchain/cloud-sql/postgres/netflix_titles_vector_table.sql --database=$database_name --quiet
 
 
-# # task 4 - use case 3
+# task 4 - use case 3
 # python case3.py
-# # end task 4
+# end task 4
 
 
 # # task 5 - conversation
 
 # # modify this to use our own conversation inputs
 python conversation.py 
+# modify this to use our own conversation inputs
+python conversation.py "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt" "$START_DIR/Audio/${TIMESTAMP}_LLM_output.txt"
 
 # # end task 5
