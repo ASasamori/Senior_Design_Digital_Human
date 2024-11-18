@@ -55,13 +55,13 @@ python ~/gcloudenv/googleTabulate.py "$YOBE_SDK/samples/audio_files/IDListener/$
 
 # ASR Latency
 ASR_END=$(date +%s.%N)
-ASR_DURATION=$(echo "$ASR_END - $ASR_START" | bc)
+ASR_DURATION=$(echo "$ASR_END - $ASR_START" | bc)  
 echo "Google ASR duration: ${ASR_DURATION} seconds"
 
 # INSERT HERE
 # Call to python script with LLM & cloud database
 # for example:
-# python3 conversation.py "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt" "$START_DIR/Audio/${TIMESTAMP}_LLM_output.txt"
+# python conversation.py "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt" "$START_DIR/Audio/${TIMESTAMP}_LLM_output.txt"
 chmod +x pipeline.sh
 ./pipeline.sh
 
