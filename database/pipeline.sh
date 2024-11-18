@@ -34,15 +34,15 @@ gcloud services enable sqladmin.googleapis.com aiplatform.googleapis.com
 
 
 
-# task 2 - use case 1
-python case1.py
-# end task 2
+# # task 2 - use case 1
+# python case1.py
+# # end task 2
 
 
 
-# task 3 - use case 2
-python case2.py
-# end task 3
+# # task 3 - use case 2
+# python case2.py
+# # end task 3
 
 
 # Import the netflix titles with vector table using gcloud command
@@ -50,13 +50,13 @@ python case2.py
 
 
 # task 4 - use case 3
-python case3.py
+# python case3.py
 # end task 4
 
 
 # task 5 - conversation
 
 # modify this to use our own conversation inputs
-python conversation.py
+python conversation.py "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt" "$START_DIR/Audio/${TIMESTAMP}_LLM_output.txt"
 
 # end task 5

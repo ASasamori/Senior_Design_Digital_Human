@@ -2,7 +2,7 @@
 START_DIR=$(dirname "$(pwd)")
 # echo "Starting in: $START_DIR"
 YOBE_SDK="$HOME/YobeSDK-Release-GrandE-0.6.2-Linux"
-echo "This path is $YOBE_SDK "
+echo "This path is $YOBE_SDK"
 
 # Retrieve time stamp (MM_DD_HH_MM)
 TIMESTAMP=$(date +"%m_%d_%H_%M")
@@ -51,7 +51,7 @@ mv "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}_broadside_pr
 # We need to do this within a virtual environment
 ASR_START=$(date +%s.%N)
 source ~/gcloudenv/bin/activate
-python ~/gcloudenv/googleTabulate.py "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_broadside.wav" > "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt"
+python ~/gcloudenv/googleTabulate.py "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_broadside.wav" > "$START_DIR/Audio/${TIMESTAMP}_ASR_output.json"
 
 # ASR Latency
 ASR_END=$(date +%s.%N)
@@ -62,6 +62,8 @@ echo "Google ASR duration: ${ASR_DURATION} seconds"
 # Call to python script with LLM & cloud database
 # for example:
 # python3 conversation.py "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt" "$START_DIR/Audio/${TIMESTAMP}_LLM_output.txt"
+chmod +x pipeline.sh
+./pipeline.sh
 
 deactivate
 

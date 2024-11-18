@@ -100,7 +100,6 @@ vector_store.add_documents(docs_to_load, ids)
 
 
 
-
 # case 3
 message_table_name = "message_store"
 pg_engine.init_chat_history_table(table_name=message_table_name)
@@ -174,17 +173,17 @@ rag_chain = ConversationalRetrievalChain.from_llm(
 )
 
 # ask some questions
-q = "What movie was Brad Pitt in?"
+q = "What movie was Brad Pitt in?" # replace with ASR output text that is a parameter to when this file is called
 ans = rag_chain({"question": q, "chat_history": chat_history})["answer"]
 print(f"Question: {q}\nAnswer: {ans}\n")
 
-q = "How about Jonny Depp?"
-ans = rag_chain({"question": q, "chat_history": chat_history})["answer"]
-print(f"Question: {q}\nAnswer: {ans}\n")
+# q = "How about Jonny Depp?"
+# ans = rag_chain({"question": q, "chat_history": chat_history})["answer"]
+# print(f"Question: {q}\nAnswer: {ans}\n")
 
-q = "Are there movies about animals?"
-ans = rag_chain({"question": q, "chat_history": chat_history})["answer"]
-print(f"Question: {q}\nAnswer: {ans}\n")
+# q = "Are there movies about animals?"
+# ans = rag_chain({"question": q, "chat_history": chat_history})["answer"]
+# print(f"Question: {q}\nAnswer: {ans}\n")
 
 # browser the chat history
 chat_history.messages
