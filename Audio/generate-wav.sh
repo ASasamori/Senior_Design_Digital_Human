@@ -64,7 +64,7 @@ deactivate
 ###################################
 # Andrew + Suhani's implementation
 source $START_DIR/.venv/bin/activate
-python3  $START_DIR/database/cloud_sql_generation.py "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt" "$START_DIR/Transcripts/Output_Cloud_LLM/${TIMESTAMP}_Cloud_LLM.txt"
+python3  $START_DIR/database/cloud_sql_generation.py "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt" "$START_DIR/Transcripts/Output_Cloud_LLM/${TIMESTAMP}_Cloud_LLM.txt" "$START_DIR/database/OpenAI_Integration/api_key.json"
 deactivate
 ###################################
 
@@ -75,6 +75,11 @@ python3 $START_DIR/Audio/OpenAItesting.py "$START_DIR/Transcripts/Output_ASR/${T
 # cat "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt"
 deactivate
 #####################################
+
+#####################################
+python3 $START_DIR/D-ID/didVideoOutput.py "$START_DIR/database/OpenAI_Integration/api_key.json" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/Transcripts/Output_LLM/Vid_link/${TIMESTAMP}_video.txt" 
+#####################################
+
 
 # Calculate total elapsed time
 # TOTAL_END=$(date +%s.%N)

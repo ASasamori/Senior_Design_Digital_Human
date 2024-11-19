@@ -11,7 +11,14 @@ import json
 from pathlib import Path
 import argparse
 
-with open('OpenAI_Integration/api_key.json', 'r') as f:
+# Input file information
+parser = argparse.ArgumentParser()
+parser.add_argument('input_file')
+parser.add_argument('output_file')
+parser.add_argument('key_info')
+args = parser.parse_args()
+
+with open(args.key_info, 'r') as f:
     config = json.load(f)
 
 cloud_project_info = config.get('cloud_project_info')
@@ -119,11 +126,6 @@ rag_chain = ConversationalRetrievalChain.from_llm(
     combine_docs_chain_kwargs={"prompt": prompt},
 )
 
-# Input file information
-parser = argparse.ArgumentParser()
-parser.add_argument('input_file')
-parser.add_argument('output_file')
-args = parser.parse_args()
 
 with open(args.input_file, 'r') as file:
     user_question = file.read()
