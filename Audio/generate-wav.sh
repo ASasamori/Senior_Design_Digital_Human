@@ -77,7 +77,9 @@ deactivate
 #####################################
 
 #####################################
-python3 $START_DIR/D-ID/didVideoOutput.py "$START_DIR/database/OpenAI_Integration/api_key.json" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/Transcripts/Output_LLM/Vid_link/${TIMESTAMP}_video.txt" 
+source $START_DIR/.venv/bin/activate
+python3 $START_DIR/D-iD/didVideoOutput.py "$START_DIR/database/OpenAI_Integration/api_key.json" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/Transcripts/Vid_link/${TIMESTAMP}_video.txt"
+deactivate
 #####################################
 
 
