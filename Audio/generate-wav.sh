@@ -62,10 +62,10 @@ deactivate
 
 
 ###################################
-# INSERT HERE
-# Call to python script with LLM & cloud database
-# for example:
-# python3 conversation.py "$START_DIR/Audio/${TIMESTAMP}_ASR_output.txt" "$START_DIR/Audio/${TIMESTAMP}_LLM_output.txt"
+# Andrew + Suhani's implementation
+source $START_DIR/.venv/bin/activate
+python3  $START_DIR/database/cloud_sql_generation.py "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt" "$START_DIR/Transcripts/Output_Cloud_LLM/${TIMESTAMP}_Cloud_LLM.txt"
+deactivate
 ###################################
 
 #####################################
