@@ -18,6 +18,9 @@ cd  ~/YobeSDK-Release-GrandE-0.6.2-Linux/samples
 arecord -D plughw:2,0 -f S16_LE -r 16000 -c 2 -t wav -d 10 "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav"
 
 echo "A record has finished"
+# Start timer
+START_TIME=$(date +%s)
+
 g++ -o "$START_DIR/Audio/normalize_raw" "$START_DIR/Audio/normalize_wav.cpp" -std=c++11
 
 # Normalizes raw Audio
@@ -63,23 +66,27 @@ deactivate
 
 ###################################
 # Andrew + Suhani's implementation
-source $START_DIR/.venv/bin/activate
-python3  $START_DIR/database/cloud_sql_generation.py "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt" "$START_DIR/Transcripts/Output_Cloud_LLM/${TIMESTAMP}_Cloud_LLM.txt" "$START_DIR/database/OpenAI_Integration/api_key.json"
-deactivate
+# source $START_DIR/.venv/bin/activate
+# python3  $START_DIR/database/cloud_sql_generation.py "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt" "$START_DIR/Transcripts/Output_Cloud_LLM/${TIMESTAMP}_Cloud_LLM.txt" "$START_DIR/database/OpenAI_Integration/api_key.json"
+# deactivate
 ###################################
 
 #####################################
 # Noa + Jackie's implementation; Change to dynamic file
 source ~/BUtLAR_Voice-Powered-Digital_Human_Assistant/Audio/venv/bin/activate
 python3 $START_DIR/Audio/OpenAItesting.py "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/database/OpenAI_Integration/api_key.json"
-# cat "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt"
 deactivate
 #####################################
 
+# End timer
+END_TIME=$(date +%s)
+ELAPSED_TIME=$((${END_TIME} - ${START_TIME}))
+echo "Elapsed time: ${ELAPSED_TIME} seconds"
+
 #####################################
-source $START_DIR/.venv/bin/activate
-python3 $START_DIR/D-iD/didVideoOutput.py "$START_DIR/database/OpenAI_Integration/api_key.json" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/Transcripts/Vid_link/${TIMESTAMP}_video.txt"
-deactivate
+# source $START_DIR/.venv/bin/activate
+# python3 $START_DIR/D-iD/didVideoOutput.py "$START_DIR/database/OpenAI_Integration/api_key.json" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/Transcripts/Vid_link/${TIMESTAMP}_video.txt"
+# deactivate
 #####################################
 
 
