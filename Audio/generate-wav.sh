@@ -71,7 +71,7 @@ deactivate
 #####################################
 # Noa + Jackie's implementation; Change to dynamic file
 source ~/BUtLAR_Voice-Powered-Digital_Human_Assistant/Audio/venv/bin/activate
-python3 $START_DIR/Audio/openAItesting.py "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/database/OpenAI_Integration/api_key.json"
+python3 $START_DIR/Audio/OpenAItesting.py "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/database/OpenAI_Integration/api_key.json"
 # cat "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt"
 deactivate
 #####################################
