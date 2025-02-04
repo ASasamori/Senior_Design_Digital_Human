@@ -107,7 +107,7 @@ llm = VertexAI(model_name="gemini-pro", project=project_id)
 ##########################################################
 # chat_history.clear()
 
-# TOOD: Fix this Conversation Summary Buffer Memory later
+# TODO: Fix this Conversation Summary Buffer Memory later
 memory = ConversationSummaryBufferMemory(
     llm=llm,
     chat_memory=chat_history,

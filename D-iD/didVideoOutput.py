@@ -33,7 +33,7 @@ with open(args.input_file, 'r') as f:
     transcript = f.read()
 # Define payload
 payload = {
-    "source_url": "https://easy-peasy.ai/cdn-cgi/image/quality=80,format=auto,width=700/https://fdczvxmwwjwpwbeeqcth.supabase.co/storage/v1/object/public/images/1dbb9693-4e22-48fd-821d-8120b1ac3aca/5f2d5cdd-6fa4-412d-a0a7-04177bf592c9.png",
+    "source_url": "https://www.d-id.com/wp-content/uploads/2023/10/Chat-D-ID_hero-image_D-ID-e1702461536248.png",
     "script": {
         "type": "text",
         "input": transcript,

@@ -1,6 +1,6 @@
 # Capture git directory 
 START_DIR=$(dirname "$(pwd)")
-# echo "Starting in: $START_DIR"
+echo "Starting in: $START_DIR"
 YOBE_SDK="$HOME/YobeSDK-Release-GrandE-0.6.2-Linux"
 echo "This path is $YOBE_SDK "
 
@@ -15,11 +15,14 @@ TOTAL_START=$(date +%s.%N)
 cd  ~/YobeSDK-Release-GrandE-0.6.2-Linux/samples
 
 # wav -d {number_of_seconds}; 10 seconds right now
-arecord -D plughw:2,0 -f S16_LE -r 16000 -c 2 -t wav -d 10 "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav"
+arecord -D plughw:2,0 -f S16_LE -r 16000 -c 2 -t wav -d 8 "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav"
+# Start 3 sec timer
+DEMO_START=$(date +%s.%N)
 
 echo "A record has finished"
+
 # Start timer
-START_TIME=$(date +%s)
+START_TIME=$(date +%s.%N)
 
 g++ -o "$START_DIR/Audio/normalize_raw" "$START_DIR/Audio/normalize_wav.cpp" -std=c++11
 
@@ -32,7 +35,7 @@ g++ -o "$START_DIR/Audio/normalize_raw" "$START_DIR/Audio/normalize_wav.cpp" -st
 cmake --build "$YOBE_SDK/samples/build" # New pi or if changing the C++ file
 
 #Yobe Latency
-DEMO_START=$(date +%s.%N)
+
 # Build file and have to run from the samples directory
 # ./build/IDListener_demo ./audio_files/IDListener/[file_location].wav broadside target-speaker "student-pc" ./build
 # Output file will be in the same location, but have _processed.wav extension
@@ -59,9 +62,9 @@ python ~/gcloudenv/googleTabulate.py "$START_DIR/Transcripts/Audio_wav/${TIMESTA
 deactivate
 
 # ASR Latency
-# ASR_END=$(date +%s.%N)
-# ASR_DURATION=$(echo "$ASR_END - $ASR_START" | bc)
-# echo "Google ASR duration: ${ASR_DURATION} seconds"
+ASR_END=$(date +%s.%N)
+ASR_DURATION=$(echo "$ASR_END - $ASR_START" | bc)
+echo "Google ASR duration: ${ASR_DURATION} seconds"
 
 
 ###################################
@@ -71,19 +74,24 @@ deactivate
 # deactivate
 ###################################
 
+LLM_TIMER=$(date +%s.%N)
 #####################################
 # Noa + Jackie's implementation; Change to dynamic file
 source ~/BUtLAR_Voice-Powered-Digital_Human_Assistant/Audio/venv/bin/activate
 python3 $START_DIR/Audio/OpenAItesting.py "$START_DIR/Transcripts/Output_ASR/${TIMESTAMP}_ASR.txt" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/database/OpenAI_Integration/api_key.json"
 deactivate
 #####################################
+LLM_TIMER_END=$(date +%s.%N)
+LLM_DUR=$(echo "$LLM_TIMER_END - $LLM_TIMER" | bc)
+echo "LLM Time: ${LLM_DUR} seconds"
 
 # End timer
-END_TIME=$(date +%s)
-ELAPSED_TIME=$((${END_TIME} - ${START_TIME}))
+END_TIME=$(date +%s.%N)
+ELAPSED_TIME=$(echo "$END_TIME - $START_TIME" | bc)
 echo "Elapsed time: ${ELAPSED_TIME} seconds"
 
 #####################################
+# D-ID (Digital Human Video generation)
 # source $START_DIR/.venv/bin/activate
 # python3 $START_DIR/D-iD/didVideoOutput.py "$START_DIR/database/OpenAI_Integration/api_key.json" "$START_DIR/Transcripts/Output_LLM/${TIMESTAMP}_LLM.txt" "$START_DIR/Transcripts/Vid_link/${TIMESTAMP}_video.txt"
 # deactivate
@@ -91,12 +99,12 @@ echo "Elapsed time: ${ELAPSED_TIME} seconds"
 
 
 # Calculate total elapsed time
-# TOTAL_END=$(date +%s.%N)
-# TOTAL_DURATION=$(echo "$TOTAL_END - $TOTAL_START" | bc)
-# echo "Total script duration: ${TOTAL_DURATION} seconds"
+TOTAL_END=$(date +%s.%N)
+TOTAL_DURATION=$(echo "$TOTAL_END - $TOTAL_START" | bc)
+echo "Total script duration: ${TOTAL_DURATION} seconds"
 
 # Cleanup
-rm "$START_DIR/Audio/normalize_raw"
-rm "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_processed.wav"
-rm "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav"
-rm "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}.wav"
+# rm "$START_DIR/Audio/normalize_raw"
+# rm "$YOBE_SDK/samples/audio_files/IDListener/${TIMESTAMP}_processed.wav"
+# rm "$YOBE_SDK/samples/audio_files/IDListener/${RAW_OUTPUT}.wav"
+# rm "$YOBE_SDK/samples/audio_files/IDListener/normalize_${TIMESTAMP}.wav"
